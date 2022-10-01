@@ -15,18 +15,19 @@ request.addEventListener('load',function(){
   const html=`
 
   <article class="country">
-          <img class="country__img" src="${data.flag}" />
+          <img class="country__img" src="${data.flags.png}" />
           <div class="country__data">
             <h3 class="country__name">${data.name}</h3>
             <h4 class="country__region">${data.region}</h4>
             <p class="country__row"><span>👫</span>${(+data.population/1000000).toFixed(1)} people</p>
-            <p class="country__row"><span>${data.language[0].name}</span>LANG</p>
-            <p class="country__row"><span>${data.currencies[0].name}</span>CUR</p>
+            <p class="country__row"><span></span>${data.languages[0]}</p>
+            <p class="country__row"><span></span>${data.currencies.INR[0]}</p>
           </div>
         </article>
   `;
 
-  countriesContainer.insertAdjacentHTML('beforeend',html)
+  countriesContainer.insertAdjacentHTML('beforeend',html);
+  countriesContainer.style.opacity="1";
 });
 
 
