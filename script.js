@@ -4,19 +4,10 @@ const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
 ///////////////////////////////////////
+const renderCountry = function(data, className=''){
+  const html=`
 
-const getCountryData=function(country){
-
-    const request=new XMLHttpRequest();
-    request.open('GET',`https://restcountries.com/v3.1/name/${country}`);
-    request.send();
-
-    request.addEventListener('load',function(){
-      const [data]=JSON.parse(this.responseText);
-      console.log(data);
-      const html=`
-
-      <article class="country">
+      <article class="country ${className}">
               <img class="country__img" src="${data.flags.png}" />
               <div class="country__data">
                 <h3 class="country__name">${data.name.comman}</h3>
@@ -30,8 +21,25 @@ const getCountryData=function(country){
 
       countriesContainer.insertAdjacentHTML('beforeend',html);
       countriesContainer.style.opacity="1";
-    });
-  }
+}
+
+const getCountryData=function(country){
+
+    // const request=new XMLHttpRequest();
+    // request.open('GET',`https://restcountries.com/v3.1/name/${country}`);
+    // request.send();
+
+      //const [data]=JSON.parse(this.responseText);
+      //console.log(data);
+    // const getCountryData=function(country){
+      fetch(`https://restcountries.com/v3.1/name/${country}`)
+      .then(response => {
+        console.log(response);
+        console.log(response.json())})
+      .then(data => {
+        renderCountry(data[0])});
+      
+  };
 
   getCountryData('bharat');
   getCountryData('portugal'); 
