@@ -33,7 +33,7 @@ const getCountryData=function(country){
       //console.log(data);
     // const getCountryData=function(country){
       fetch(`https://restcountries.com/v3.1/name/${country}`)
-      .then(response =>  response.json())
+      .then(response =>  response.json(),error => alert(error))
       .then(data => { 
         renderCountry(data[0]);
         const neighbour=data[0].borders?.[0];
@@ -44,6 +44,10 @@ const getCountryData=function(country){
       .then(data => renderCountry(data[0],'neighbour'));
   };
 
-  // getCountryData('bharat');
+
+  btn.addEventListener('click',function(){
+// getCountryData('bharat');
   getCountryData('portugal'); 
+  });
+  
 
