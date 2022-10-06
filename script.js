@@ -34,11 +34,11 @@ const getCountryData=function(country){
     // const getCountryData=function(country){
       fetch(`https://restcountries.com/v3.1/name/${country}`)
       .then(response => {
-        console.log(response);
-        console.log(response.json())})
+        response.json()
       .then(data => {
-        renderCountry(data[0])});
-      
+        renderCountry(data[0])
+      });
+      });
   };
 
   getCountryData('bharat');
