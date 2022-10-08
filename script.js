@@ -33,7 +33,10 @@ const getCountryData=function(country){
       //console.log(data);
     // const getCountryData=function(country){
       fetch(`https://restcountries.com/v3.1/name/${country}`)
-      .then(response =>  response.json())
+      .then(response =>  {
+        console.log(response);
+        return response.json()
+      })
       .then(data => { 
         renderCountry(data[0]);
         const neighbour=data[0].borders?.[0];
@@ -42,13 +45,56 @@ const getCountryData=function(country){
         return fetch(`https://restcountries.com/v3.1/name/${neighbour}`)
       }).then(response => response.json())
       .then(data => renderCountry(data[0],'neighbour'))
-      .catch(error => alert(error));
+      .catch(error => {
+        renderError(`Something went wrong 😢😢😢${error.message}.Try Again !`);
+      });
   };
 
 
-  btn.addEventListener('click',function(){
+btn.addEventListener('click',function(){
 // getCountryData('bharat');
   getCountryData('portugal'); 
-  });
+});
+
+const renderError = function(msg) {
+    countriesContainer.insertAdjacentText('beforeend', msg);
+    countriesContainer.style.opacity = 1;
+};
+
+// const getJSON = function(url, errorMsg = 'Something went wrong') {
+//       return fetch(url).then(response => {
+//           console.log(response);
+  
+//           if (!response.ok) throw new Error(`${errorMsg} ${response.status}`);
+  
+//           return response.json();
+//       });
+// };
+  
+const whereAmI = function(lat,lng){
+  fetch(`https://www.geocode.xyz/${lat},${lng}?geoit=json`)
+    .then(res => 
+      {
+        if(! res.ok) throw new Error(`problem with geocoding ${res.status}`);
+        return res.json();
+      })
+    .then(data => {
+      console.log(data);
+      console.log(`You are in ${data.city}, ${data.country}`);
+      return fetch(`https://www.restcountries.com/v3.1/name/${data.country}`);
+
+    })
+    .then(response => {
+                  if (!response.ok) throw new Error(`Country not found ${response.status}`);
+                  return response.json();
+              })
+    .then(data => renderCountry(data[0]))
+    .catch(error => console.log(`${error.message} 😒😒😒`))
+      .finally(() => (countriesContainer.style.opacity = 1));
+
+}
+
+whereAmI(52.508,13.381);
+
   
 
