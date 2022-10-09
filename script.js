@@ -35,15 +35,21 @@ const getCountryData=function(country){
       fetch(`https://restcountries.com/v3.1/name/${country}`)
       .then(response =>  {
         console.log(response);
+        if(! response.ok)
+        throw new Error(`Country not found(${response.status})`)
         return response.json()
       })
       .then(data => { 
         renderCountry(data[0]);
-        const neighbour=data[0].borders?.[0];
+        // const neighbour=data[0].borders?.[0];
+        const neighbour='jdfhgfjjf';
         if(! neighbour)
           return;
         return fetch(`https://restcountries.com/v3.1/name/${neighbour}`)
-      }).then(response => response.json())
+      }).then(response => {
+        throw new Error(`Country not found(${response.status})`)
+        return response.json()
+      } )
       .then(data => renderCountry(data[0],'neighbour'))
       .catch(error => {
         renderError(`Something went wrong 😢😢😢${error.message}.Try Again !`);
@@ -57,6 +63,7 @@ btn.addEventListener('click',function(){
 // getCountryData('bharat');
   getCountryData('portugal'); 
 });
+// getCountryData('fjkhgkgkj'); 
 
 const renderError = function(msg) {
     countriesContainer.insertAdjacentText('beforeend', msg);
