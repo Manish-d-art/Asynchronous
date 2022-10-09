@@ -20,7 +20,7 @@ const renderCountry = function(data, className=''){
       `;
 
       countriesContainer.insertAdjacentHTML('beforeend',html);
-      countriesContainer.style.opacity="1";
+      // countriesContainer.style.opacity="1";
 }
 
 // const geCountryAndNeighbour = function(countryName) {
@@ -148,7 +148,7 @@ btn.addEventListener('click',function(){
 
 const renderError = function(msg) {
     countriesContainer.insertAdjacentText('beforeend', msg); 
-    countriesContainer.style.opacity = 1;
+    // countriesContainer.style.opacity = 1;
 };
 
 
@@ -169,10 +169,14 @@ const whereAmI = function(lat,lng){
     })
     .then(response => {
                   if (!response.ok) throw new Error(`Country not found (${response.status})`);
-
+                  // console.log(response);
                   return response.json();
               })
-    .then(data => renderCountry(data[0]))
+    .then(data => 
+      {
+        renderCountry(data[0])
+        // console.log(data);
+      })
     .catch(error => console.log(`${error.message} 😒😒😒`))
     .finally(() => (countriesContainer.style.opacity = 1));
 
