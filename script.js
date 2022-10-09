@@ -90,7 +90,7 @@ const getCountryData=function(country){
       const neighbour=data[0].borders?.[0];
       // const neighbour='jdfhgfjjf';
       if(! neighbour)
-        return;
+       throw new Error(`No neighbour found !🥲🥲`)
       // return fetch(`https://restcountries.com/v3.1/name/${neighbour}`)
       return getJSON(`https://restcountries.com/v3.1/name/${neighbour}`,'Country not found')
     // }).then(response => {
@@ -108,7 +108,7 @@ const getCountryData=function(country){
 
 btn.addEventListener('click',function(){
 // getCountryData('bharat');
-  getCountryData('portugal'); 
+  getCountryData('Australia'); 
 });
 // getCountryData('fjkhgkgkj'); 
 
