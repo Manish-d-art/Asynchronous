@@ -74,13 +74,14 @@ const renderCountry = function(data, className=''){
 //       })
 //       .then(data => { 
 //         renderCountry(data[0]);
-//         // const neighbour=data[0].borders?.[0];
-//         const neighbour='jdfhgfjjf';
+//         const neighbour=data[0].borders?.[0];
+//         // const neighbour='jdfhgfjjf';
 //         if(! neighbour)
 //           return;
 //         return fetch(`https://restcountries.com/v3.1/name/${neighbour}`)
 //       }).then(response => {
-//         throw new Error(`Country not found(${response.status})`)
+//         if(! response.ok)
+//           throw new Error(`Country not found(${response.status})`)
 //         return response.json()
 //       } )
 //       .then(data => renderCountry(data[0],'neighbour'))
@@ -141,7 +142,7 @@ const getCountryData=function(country){
 
 btn.addEventListener('click',function(){
 // getCountryData('bharat');
-  getCountryData('Australia'); 
+  getCountryData('portugal'); 
 });
 // getCountryData('fjkhgkgkj'); 
 
