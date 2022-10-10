@@ -20,7 +20,7 @@ const renderCountry = function(data, className=''){
       `;
 
       countriesContainer.insertAdjacentHTML('beforeend',html);
-      // countriesContainer.style.opacity="1";
+      countriesContainer.style.opacity="1";
 }
 
 // const geCountryAndNeighbour = function(countryName) {
@@ -140,47 +140,47 @@ const getCountryData=function(country){
 };
 
 
-btn.addEventListener('click',function(){
-// getCountryData('bharat');
-  getCountryData('portugal'); 
-});
-// getCountryData('fjkhgkgkj'); 
+// btn.addEventListener('click',function(){
+// // getCountryData('bharat');
+//   getCountryData('portugal'); 
+// });
+// // getCountryData('fjkhgkgkj'); 
 
-const renderError = function(msg) {
-    countriesContainer.insertAdjacentText('beforeend', msg); 
-    // countriesContainer.style.opacity = 1;
-};
+// const renderError = function(msg) {
+//     countriesContainer.insertAdjacentText('beforeend', msg); 
+//     // countriesContainer.style.opacity = 1;
+// };
 
 
   
-const whereAmI = function(lat,lng){
-  fetch(`https://www.geocode.xyz/${lat},${lng}?geoit=json`)
-    .then(res => 
-      {
-        if(! res.ok) throw new Error(`problem with geocoding ${res.status}`);
-        return res.json();
-      })
-    .then(data => {
-      console.log(data);
-      console.log(`You are in ${data.city}, ${data.country}`);
+// const whereAmI = function(lat,lng){
+//   fetch(`https://www.geocode.xyz/${lat},${lng}?geoit=json`)
+//     .then(res => 
+//       {
+//         if(! res.ok) throw new Error(`problem with geocoding ${res.status}`);
+//         return res.json();
+//       })
+//     .then(data => {
+//       console.log(data);
+//       console.log(`You are in ${data.city}, ${data.country}`);
 
-      return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
+//       return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
 
-    })
-    .then(response => {
-                  if (!response.ok) throw new Error(`Country not found (${response.status})`);
-                  // console.log(response);
-                  return response.json();
-              })
-    .then(data => 
-      {
-        renderCountry(data[0])
-        // console.log(data);
-      })
-    .catch(error => console.log(`${error.message} 😒😒😒`))
-    .finally(() => (countriesContainer.style.opacity = 1));
+//     })
+//     .then(response => {
+//                   if (!response.ok) throw new Error(`Country not found (${response.status})`);
+//                   // console.log(response);
+//                   return response.json();
+//               })
+//     .then(data => 
+//       {
+//         renderCountry(data[0])
+//         // console.log(data);
+//       })
+//     .catch(error => console.log(`${error.message} 😒😒😒`))
+//     .finally(() => (countriesContainer.style.opacity = 1));
 
-}
+// }
 
 // whereAmI(52.508,13.381);
 // whereAmI(56.508,13.381);
@@ -223,7 +223,7 @@ const whereAmI = function(lat,lng){
 // promisifying the geolocation API
 // navigator.geolocation.getCurrentPosition(
 //   position => console.log(position),
-//   err => console.err(err)
+//   err => console.error(err)
 // );
 
 const getPosition=function(){
@@ -236,3 +236,39 @@ const getPosition=function(){
   });
 };
 getPosition().then(pos => console.log(pos));
+
+
+const whereAmI = function(){
+  getPosition().then(pos => {
+    const {latitude:lat,longitude:lng}=pos.coords;
+
+    return  fetch(`https://www.geocode.xyz/${lat},${lng}?geoit=json`)
+
+  })
+    .then(res => 
+      {
+        if(! res.ok) throw new Error(`problem with geocoding ${res.status}`);
+        return res.json();
+      })
+    .then(data => {
+      console.log(data);
+      console.log(`You are in ${data.city}, ${data.country}`);
+
+      return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
+
+    })
+    .then(response => {
+                  if (!response.ok) throw new Error(`Country not found (${response.status})`);
+                  // console.log(response);
+                  return response.json();
+              })
+    .then(data => 
+      {
+        renderCountry(data[0])
+        // console.log(data);
+      })
+    .catch(error => console.log(`${error.message} 😒😒😒`))
+    .finally(() => (countriesContainer.style.opacity = 1));
+
+};
+whereAmI();
