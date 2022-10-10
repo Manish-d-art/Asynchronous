@@ -187,35 +187,52 @@ const whereAmI = function(lat,lng){
 // whereAmI(59.508,13.381);
 
 
-const lotteryPromise=new Promise(function (resolve,reject){
-  console.log('Lotter is happening 🔮');
-  setTimeout(function(){
-    if(Math.random() >= 0.5){
-      resolve ('You WIN 💶💷🤑');
-    }else{
-      reject(new Error('You lost your money 😭😭'));
-    }
-  },2000);
-});
+// const lotteryPromise=new Promise(function (resolve,reject){
+//   console.log('Lotter is happening 🔮');
+//   setTimeout(function(){
+//     if(Math.random() >= 0.5){
+//       resolve ('You WIN 💶💷🤑');
+//     }else{
+//       reject(new Error('You lost your money 😭😭'));
+//     }
+//   },2000);
+// });
 
-lotteryPromise.then(res => console.log(res))
-.catch(err =>console.log(err));
+// lotteryPromise.then(res => console.log(res))
+// .catch(err =>console.log(err));
 
 //promisifying setTimeout
-const wait =function(seconds){
-  return new Promise(function(resolve){
-    setTimeout(resolve,seconds*1000);
+// const wait =function(seconds){
+//   return new Promise(function(resolve){
+//     setTimeout(resolve,seconds*1000);
+//   });
+// };
+
+// wait(2)
+//   .then( () => {
+//     console.log('I waited for 2 second');
+//     return wait(1);
+//   })
+//     .then( () => console.log('I waited for 1 second'));
+
+
+// Promise.resolve('abc').then(x => console.log(x));
+// Promise.reject(new Error('Problem!')).catch(x => console.error(x));  
+
+
+// promisifying the geolocation API
+// navigator.geolocation.getCurrentPosition(
+//   position => console.log(position),
+//   err => console.err(err)
+// );
+
+const getPosition=function(){
+  return new Promise(function(resolve,reject){
+    // navigator.geolocation.getCurrentPosition(
+    //   position => resolve(position),
+    //   err => reject(err)
+    // );
+    navigator.geolocation.getCurrentPosition(resolve,reject);
   });
 };
-
-wait(2)
-  .then( () => {
-    console.log('I waited for 2 second');
-    return wait(1);
-  })
-    .then( () => console.log('I waited for 1 second'));
-
-
-Promise.resolve('abc').then(x => console.log(x));
-Promise.reject(new Error('Problem!')).catch(x => console.error(x));  
-
+getPosition().then(pos => console.log(pos));
