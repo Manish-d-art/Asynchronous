@@ -142,9 +142,10 @@ const getCountryData=function(country){
 
 // btn.addEventListener('click',function(){
 // // getCountryData('bharat');
-//   getCountryData('portugal'); 
+//   // getCountryData('portugal'); 
+
 // });
-// // getCountryData('fjkhgkgkj'); 
+// getCountryData('fjkhgkgkj'); 
 
 // const renderError = function(msg) {
 //     countriesContainer.insertAdjacentText('beforeend', msg); 
@@ -226,15 +227,15 @@ const getCountryData=function(country){
 //   err => console.error(err)
 // );
 
-const getPosition=function(){
-  return new Promise(function(resolve,reject){
-    // navigator.geolocation.getCurrentPosition(
-    //   position => resolve(position),
-    //   err => reject(err)
-    // );
-    navigator.geolocation.getCurrentPosition(resolve,reject);
-  });
-};
+// const getPosition=function(){
+//   return new Promise(function(resolve,reject){
+//     // navigator.geolocation.getCurrentPosition(
+//     //   position => resolve(position),
+//     //   err => reject(err)
+//     // );
+//     navigator.geolocation.getCurrentPosition(resolve,reject);
+//   });
+// };
 getPosition().then(pos => console.log(pos));
 
 
@@ -322,3 +323,11 @@ createImage('./img/img-1.jpg')
     })
     .then(() => (currImg.style.display = 'block'))
     .catch(err => console.error(err));
+
+    
+    // Async/Await
+const getPosition = function() {
+    return new Promise(function(resolve, reject) {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+};
