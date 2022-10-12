@@ -326,41 +326,41 @@ const renderError = function(msg) {
 
 
 // Async/Await
-const getPosition = function() {
-    return new Promise(function(resolve, reject) {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-    });
-};
+// const getPosition = function() {
+//     return new Promise(function(resolve, reject) {
+//         navigator.geolocation.getCurrentPosition(resolve, reject);
+//     });
+// };
 
-const whereAmI=async function(){
-  //Geolocation
-  try{
-      const pos = await getPosition();
-      const { latitude: lat, longitude: lng }=pos.coords;
+// const whereAmI=async function(){
+//   //Geolocation
+//   try{
+//       const pos = await getPosition();
+//       const { latitude: lat, longitude: lng }=pos.coords;
 
-      //reverse geocoding
-      const resGeo=await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-      if(!resGeo.ok) throw new Error('problem getting location data');
+//       //reverse geocoding
+//       const resGeo=await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+//       if(!resGeo.ok) throw new Error('problem getting location data');
 
-      const dataGeo=await resGeo.json();
-      console.log(dataGeo);
+//       const dataGeo=await resGeo.json();
+//       console.log(dataGeo);
 
-      const res=await fetch(
-        `https://restcountries.com/v3.1/name/${dataGeo.country}`
-      );
-      if(!res.ok) throw new Error('problem getting country');
+//       const res=await fetch(
+//         `https://restcountries.com/v3.1/name/${dataGeo.country}`
+//       );
+//       if(!res.ok) throw new Error('problem getting country');
 
-      const data=await res.json();
-      console.log(data);
-      renderCountry(data[0]);
-      return(`you are in ${dataGeo.city}, ${dataGeo.country}`);
+//       const data=await res.json();
+//       console.log(data);
+//       renderCountry(data[0]);
+//       return(`you are in ${dataGeo.city}, ${dataGeo.country}`);
 
-    }catch(err){
-      console.log(`${err}😢😢`);
-      renderError(` 🥲 ${err.message}`);
-      throw err;
-    }
-}
+//     }catch(err){
+//       console.log(`${err}😢😢`);
+//       renderError(` 🥲 ${err.message}`);
+//       throw err;
+//     }
+// }
 
 // whereAmI().then(city => console.log(city))
 // .catch(err => console.log(`2: ${err.message} 🤔🤔`))
@@ -378,20 +378,72 @@ const whereAmI=async function(){
 //     console.log(`3. Finished getting location`);
 // })();
 
-const get3Countries = async function(c1, c2, c3){
-  try{
-    const data = await Promise.all([
-      getJSON(`https://restcountries.com/v3.1/name/${c1}`),
-      getJSON(`https://restcountries.com/v3.1/name/${c2}`),
-      getJSON(`https://restcountries.com/v3.1/name/${c3}`),
+
+// Promise.all -->
+
+// const get3Countries = async function(c1, c2, c3){
+//   try{
+//     const data = await Promise.all([
+//       getJSON(`https://restcountries.com/v3.1/name/${c1}`),
+//       getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+//       getJSON(`https://restcountries.com/v3.1/name/${c3}`),
   
-    ]);
+//     ]);
   
-    console.log(data.map(d => d[0].capital));
-  }catch( err ){
-    console.log(err);
-  }
+//     console.log(data.map(d => d[0].capital));
+//   }catch( err ){
+//     console.log(err);
+//   }
   
+// };
+
+// get3Countries('portugal','bharat','china');
+
+// Promise.race -->
+(async function(){
+  const res = await Promise.race([
+    getJSON(`https://restcountries.com/v3.1/name/italy`),
+    getJSON(`https://restcountries.com/v3.1/name/egypt`),
+    getJSON(`https://restcountries.com/v3.1/name/mexico`),
+  ]);
+
+  console.log(res[0]);
+}) ();
+
+const timeout = function(s){
+  return new Promise(function(_, reject){
+    setTimeout(function(){
+      reject(new Error(`Request took too long!`));
+    }, s*1000);
+  });
 };
 
-get3Countries('portugal','bharat','china');
+Promise.race([
+  getJSON(`https://restcountries.com/v3.1/name/mexico`),
+  timeout(1),
+])
+.then(res => console.log(res[0]))
+.catch(err => console.log(err));
+
+// Promise.allSettled -->
+Promise.allSettled([
+    Promise.resolve('Success'),
+    Promise.reject('ERROR'),
+    Promise.resolve('Another success'),
+]).then(res => console.log(res));
+
+Promise.all([
+        Promise.resolve('Success'),
+        Promise.reject('ERROR'),
+        Promise.resolve('Another success'),
+    ])
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+
+Promise.any([
+        Promise.resolve('Success'),
+        Promise.reject('ERROR'),
+        Promise.resolve('Another success'),
+    ])
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
