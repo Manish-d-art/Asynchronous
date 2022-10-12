@@ -353,10 +353,12 @@ const whereAmI=async function(){
       const data=await res.json();
       console.log(data);
       renderCountry(data[0]);
+      return(`you are in ${dataGeo.city}, ${dataGeo.country}`);
+
     }catch(err){
       console.error(`${err}😢😢`);
       renderError(` 🥲 ${err.message}`);
     }
 }
-whereAmI();
+whereAmI().then(city => console.log(city));
 console.log('first');
