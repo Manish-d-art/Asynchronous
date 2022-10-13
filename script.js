@@ -446,4 +446,4 @@ Promise.any([
         Promise.resolve('Another success'),
     ])
     .then(res => console.log(res))
-    .catch(err => console.error(err));
+    .catch(err => console.log(err));
